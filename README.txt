@@ -2,7 +2,8 @@ Using these, You can create your own image data set for TensorFlow.
 
 Run,
 python main.py
-after put classified jpg in assingd directory
+after put classified jpg in assingd directory and
+write "num_classes=****" to config.ini
 
 ///////////////For Example/////////////////
 data_set
