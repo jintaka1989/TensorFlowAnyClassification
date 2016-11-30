@@ -51,6 +51,17 @@ class ImageDataSet:
             self.train_len = len(self.train_image)
 
     @staticmethod
+    def replace_space(folderpath):
+        files = os.listdir(folderpath)
+        for file in files:
+            old_name = folderpath + "/" + file
+            # スペースの削除
+            new_name = folderpath + "/" + file.replace(" ", "_")
+            if not (old_name == new_name):
+                os.rename(old_name, new_name)
+
+
+    @staticmethod
     def create_labels(filepath, class_num):
         files = glob.glob(filepath + "/*")
         f = open(os.path.dirname(filepath) + "/class" + str(class_num) + ".txt", "w")
@@ -71,11 +82,16 @@ class ImageDataSet:
     @staticmethod
     def create_train_labels(app_root_path, num_of_classes):
         for num in range(0, num_of_classes):
+            # os.system('rename "s/ /_/g" ' + app_root_path + 'data_set/train/class' + str(num) + '/*.jpg')
+            ImageDataSet.replace_space(app_root_path + 'data_set/train/class' + str(num))
             ImageDataSet.create_labels(app_root_path + "data_set/train/class" + str(num), num)
 
     @staticmethod
     def create_test_labels(app_root_path, num_of_classes):
         for num in range(0, num_of_classes):
+            # os.system('rename "s/ /_/g" ' + app_root_path + 'data_set/test/class' + str(num) + '/*.jpg')
+            ImageDataSet.replace_space(app_root_path + 'data_set/test/class' + str(num))
+            # os.rename(app_root_path + 'data_set/test/class' + str(num) + '/*.jpg')
             ImageDataSet.create_labels(app_root_path + "data_set/test/class" + str(num), num)
 
     @staticmethod
