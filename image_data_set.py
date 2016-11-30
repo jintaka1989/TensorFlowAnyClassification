@@ -82,16 +82,13 @@ class ImageDataSet:
     @staticmethod
     def create_train_labels(app_root_path, num_of_classes):
         for num in range(0, num_of_classes):
-            # os.system('rename "s/ /_/g" ' + app_root_path + 'data_set/train/class' + str(num) + '/*.jpg')
             ImageDataSet.replace_space(app_root_path + 'data_set/train/class' + str(num))
             ImageDataSet.create_labels(app_root_path + "data_set/train/class" + str(num), num)
 
     @staticmethod
     def create_test_labels(app_root_path, num_of_classes):
         for num in range(0, num_of_classes):
-            # os.system('rename "s/ /_/g" ' + app_root_path + 'data_set/test/class' + str(num) + '/*.jpg')
             ImageDataSet.replace_space(app_root_path + 'data_set/test/class' + str(num))
-            # os.rename(app_root_path + 'data_set/test/class' + str(num) + '/*.jpg')
             ImageDataSet.create_labels(app_root_path + "data_set/test/class" + str(num), num)
 
     @staticmethod
