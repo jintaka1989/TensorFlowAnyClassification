@@ -4,3 +4,7 @@
 test.py
 *.pyc
 tmp
+models
+models/model.ckpt
+models/model.ckpt.*
+models/checkpoint

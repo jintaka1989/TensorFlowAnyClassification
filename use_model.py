@@ -126,12 +126,20 @@ if __name__ == '__main__':
     #     jpgname = test_image_name[i].lstrip(os.getcwd() + "/data_set")
     #     print jpgname + (":" + str(pred)).rjust(30-len(jpgname), " ")
 
+    count = 0.0
+    count_all = 0.0
+
     for i in range(len(test_image)):
         pr = logits.eval(feed_dict={
             images_placeholder: [test_image[i]],
             keep_prob: 1.0 })[0]
         pred = np.argmax(pr)
         # print pr
-        jpgname = test_image_name[i].lstrip(os.getcwd() + "/data_set")
+
+        jpgname = test_image_name[i].lstrip(os.getcwd()).lstrip("data_set/test/class")
         print jpgname + (":" + str(pred)).rjust(30-len(jpgname), " ")
+        if pred == int(jpgname[:1]):
+            count += 1.0
+        count_all += 1.0
+    print (count/count_all)
     print "finish"
