@@ -202,7 +202,7 @@ if __name__ == '__main__':
                         images_placeholder: train_image[batch:batch_plus],
                         labels_placeholder: train_label[batch:batch_plus],
                         keep_prob: 1.0})
-                    if i is not 0: train_accuracy /= 2.0
+                train_accuracy /= float(train_batch)
                 # 10 step終わるたびにTensorBoardに表示する値を追加する
                 #summary_str = sess.run(summary_op, feed_dict={
                 #    images_placeholder: train_image,
@@ -225,6 +225,6 @@ if __name__ == '__main__':
                 images_placeholder: test_image[batch:batch_plus],
                 labels_placeholder: test_label[batch:batch_plus],
                 keep_prob: 1.0})
-        if i is not 0: test_accuracy /= 2.0
+    test_accuracy /= float(test_batch)
     print "test accuracy %g"%(test_accuracy)
     save_path = saver.save(sess, FLAGS.save_model)
