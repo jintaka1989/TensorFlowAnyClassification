@@ -13,7 +13,7 @@ NUM_CLASSES = int(inifile.get("settings", "num_classes"))
 DOWNLOAD_LIMIT = int(inifile.get("settings", "download_limit"))
 
 IMAGE_SIZE = int(inifile.get("settings", "image_size"))
-# カラー画像だから*3？
+# カラー画像なので*3
 IMAGE_PIXELS = IMAGE_SIZE*IMAGE_SIZE*3
 
 flags = tf.app.flags
@@ -28,14 +28,6 @@ flags.DEFINE_integer('batch_size', 256, 'Batch size'
 flags.DEFINE_float('learning_rate', 1e-4, 'Initial learning rate.')
 
 def inference(images_placeholder, keep_prob):
-    ###############################################################
-    #   ディープラーニングのモデルを作成する関数
-    # 引数:
-    #  images_placeholder: inputs()で作成した画像のplaceholder
-    #  keep_prob: dropout率のplace_holder
-    # 返り値:
-    #  cross_entropy: モデルの計算結果
-    ###############################################################
     # 重みを標準偏差0.1の正規分布で初期化
     def weight_variable(shape):
       initial = tf.truncated_normal(shape, stddev=0.1)
@@ -87,39 +79,15 @@ def inference(images_placeholder, keep_prob):
     return y_conv
 
 def loss(logits, labels):
-    ###############################################################
-    #   lossを計算する関数
-    # 引数:
-    #  logits: ロジットのtensor, float - [batch_size, NUM_CLASSES]
-    #  labels: ラベルのtensor, int32 - [batch_size, NUM_CLASSES]
-    # 返り値:
-    #  cross_entropy: モデルの計算結果
-    ###############################################################
     cross_entropy = -tf.reduce_sum(labels*tf.log(tf.clip_by_value(logits,1e-10,1.0)))
     tf.scalar_summary("cross_entropy", cross_entropy)
     return cross_entropy
 
 def training(loss, learning_rate):
-    ###############################################################
-    #   訓練のOpを定義する関数
-    # 引数:
-    #  loss: 損失のtensor, loss()の結果
-    #  learning_rate: 学習係数
-    # 返り値:
-    #  train_step: 訓練のOp
-    ###############################################################
     train_step = tf.train.AdamOptimizer(learning_rate).minimize(loss)
     return train_step
 
 def accuracy(logits, labels):
-    ###############################################################
-    #   正解率(accuracy)を計算する関数
-    # 引数:
-    #  logits: inference()の結果
-    #  labels: ラベルのtensor, int32 - [batch_size, NUM_CLASSES]
-    # 返り値:
-    #  accuracy: 正解率(float)
-    ###############################################################
     correct_prediction = tf.equal(tf.argmax(logits, 1), tf.argmax(labels, 1))
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, "float"))
     tf.scalar_summary("accuracy", accuracy)
